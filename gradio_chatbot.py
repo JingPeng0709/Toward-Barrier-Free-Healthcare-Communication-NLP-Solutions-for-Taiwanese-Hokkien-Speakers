@@ -1,0 +1,173 @@
+import gradio as gr
+from model_utils import *
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+
+with gr.Blocks(theme=gr.themes.Soft(primary_hue=gr.themes.colors.emerald, secondary_hue=gr.themes.colors.pink)) as demo:
+    gr.Markdown('''<div style="text-align:center"><h1>Demo：</h1></div>''')
+    gr.Markdown('''<div style="text-align:center"><h2>研究生：吳景鵬</h2></div>''')
+    
+    # gr.Markdown('''<div style="text-align:center"><h2>RAG</h2></div>''')
+    # with gr.Row():
+    #     with gr.Column(scale=0.33):
+    #         gr.Markdown('''<div style="text-align:center"><h2>華文</h2></div>''')
+    #         chatbot = gr.Chatbot([], elem_id="chatbot", height=250)
+    #     with gr.Column(scale=0.33):
+    #         gr.Markdown('''<div style="text-align:center"><h2>台漢</h2></div>''')
+    #         translated_chatbot = gr.Chatbot([], elem_id="translated_chatbot", height=250)
+    #     with gr.Column(scale=0.33):
+    #         gr.Markdown('''<div style="text-align:center"><h2>台羅</h2></div>''')
+    #         translated_chatbot_tl = gr.Chatbot([], elem_id="translated_chatbot_tl", height=250)
+    
+        # with gr.Column(scale=0.33):
+        #     gr.Markdown('''<div style="text-align:center"><h2>Chatbot(台羅)</h2></div>''')
+        #     translated_chatbot_tl = gr.Chatbot([], elem_id="translated_chatbot_tl", height=350)
+    
+    # gr.Markdown('''<div style="text-align:center"><h2>CAG</h2></div>''')
+    with gr.Row():
+        with gr.Column(scale=0.33):
+            gr.Markdown('''<div style="text-align:center"><h2>華文</h2></div>''')
+            cag_chatbot = gr.Chatbot([], elem_id="cag_chatbot", height=350)
+        with gr.Column(scale=0.33):
+            gr.Markdown('''<div style="text-align:center"><h2>台漢</h2></div>''')
+            cag_hl_chatbot = gr.Chatbot([], elem_id="cag_hl_chatbot", height=350)
+        with gr.Column(scale=0.33):
+            gr.Markdown('''<div style="text-align:center"><h2>台羅</h2></div>''')
+            cag_tl_chatbot = gr.Chatbot([], elem_id="cag_tl_chatbot", height=350)
+
+    # TTS 播放區域
+    with gr.Row():
+        with gr.Column(scale=0.7):
+            tts_audio = gr.Audio(label="台羅語音", type="filepath", interactive=False)
+        with gr.Column(scale=0.3):
+            tts_btn = gr.Button('🔊 播放台羅語音', variant='secondary', size='sm')
+    
+    with gr.Row():
+        with gr.Column(scale=0.2, variant='panel'):
+            augmented_mode = gr.Dropdown(
+                choices=["cag-長照問答", "rag-中西藥併用"],
+                value="cag-長照問答",
+                label="Select mode",
+                type='index',
+            )
+        
+    txt = gr.Textbox(label="Question", lines=2, placeholder="Enter your question and press \"shift+enter\" ")
+
+    with gr.Row():
+        with gr.Column(scale=0.5):
+            submit_btn = gr.Button('Submit', variant='primary', size='sm')
+        with gr.Column(scale=0.5):
+            clear_btn = gr.Button('Clear', variant='stop', size='sm')
+
+#     with gr.Row():
+#         with gr.Column(scale=0.5, variant='panel'):
+#             gr.Markdown("## 說明:第一次使用請先上傳一個.pdf檔案，以建立一個新的向量資料庫。")
+#             gr.Markdown("## 1.上傳.pdf檔案　　2.選擇Embedding Model　　3.建立新向量資料庫")
+
+#             file = gr.File(type="file")
+#             with gr.Row(equal_height=True):
+#                 with gr.Column(scale=0.5, variant='panel'):
+#                     embedding_model = gr.Dropdown(choices=["bge-large-zh-v1.5", "text2vec-large-chinese"],
+#                                                   value="bge-large-zh-v1.5",
+#                                                   label="Select the embedding model")
+#                 with gr.Column(scale=0.5, variant='compact'):
+#                     vector_index_btn = gr.Button('Create new Vector DB', variant='primary', scale=1)
+#                     vector_index_msg_out = gr.Textbox(show_label=False, lines=1, scale=1, placeholder="Creating vector DB ...")
+
+#             with gr.Row(equal_height=True):
+#                 gr.Markdown('''<div style="text-align:center"><h2>4.載入向量資料庫</h2></div>''')
+#                 llm = gr.Variable(value="Llama3-8B-Chinese-Chat")
+#                 hf_token = gr.State(value="")
+#                 model_load_btn = gr.Button('Load Vector DB', variant='primary', scale=1)
+#                 load_success_msg = gr.Textbox(show_label=False, lines=1, placeholder="Waiting ...")
+
+#             instruction = gr.Textbox(label="System instruction", lines=3, value="請嘗試使用以下的參考資訊來回答問題，如果在給定的參考資訊中找不到任何與問題相關的資訊，就當作沒看過參考資訊，以你的理解自行回答這個問題，但是回答不能有偽造成分。請用繁體中文回答問題，保持回答生動。")
+#             reset_inst_btn = gr.Button('Reset', variant='primary', size='sm')
+
+
+            # with gr.Accordion(label="Text generation tuning parameters"):
+            #     temperature = gr.Slider(label="temperature", minimum=0.1, maximum=1, value=0.2, step=0.05)
+            #     max_new_tokens = gr.Slider(label="max_new_tokens", minimum=1, maximum=2048, value=512, step=1)
+            #     repetition_penalty = gr.Slider(label="repetition_penalty", minimum=0, maximum=2, value=1.1, step=0.1)
+            #     top_k = gr.Slider(label="top_k", minimum=1, maximum=100, value=50, step=1)
+            #     top_p = gr.Slider(label="top_p", minimum=0, maximum=1, value=0.9, step=0.05)
+            #     k_context = gr.Slider(label="k_context", minimum=1, maximum=10, value=3, step=1)
+
+#             vector_index_btn.click(upload_and_create_vector_store, [file, embedding_model], vector_index_msg_out)
+#             reset_inst_btn.click(reset_sys_instruction, instruction, instruction)
+
+#         with gr.Column(scale=0.5, variant='panel'):
+#             with gr.Accordion(label="Text generation tuning parameters"):
+#                 temperature = gr.Slider(label="temperature", minimum=0.1, maximum=1, value=0.2, step=0.05)
+#                 max_new_tokens = gr.Slider(label="max_new_tokens", minimum=1, maximum=2048, value=512, step=1)
+#                 repetition_penalty = gr.Slider(label="repetition_penalty", minimum=0, maximum=2, value=1.1, step=0.1)
+#                 top_k = gr.Slider(label="top_k", minimum=1, maximum=100, value=50, step=1)
+#                 top_p = gr.Slider(label="top_p", minimum=0, maximum=1, value=0.9, step=0.05)
+#                 k_context = gr.Slider(label="k_context", minimum=1, maximum=10, value=3, step=1)
+                
+            # gr.Markdown('''<div style="text-align:center"><h2>Chatbox(中文)</h2></div>''')
+            # chatbot = gr.Chatbot([], elem_id="chatbot", height=350)
+            # gr.Markdown('''<div style="text-align:center"><h2>Chatbot(全漢)</h2></div>''')
+            # translated_chatbot = gr.Chatbot([], elem_id="translated_chatbot", height=350)
+            # gr.Markdown('''<div style="text-align:center"><h2>Chatbot(台羅)</h2></div>''')
+            # translated_chatbot_tl = gr.Chatbot([], elem_id="translated_chatbot_tl", height=350)
+            
+#             txt = gr.Textbox(label="Question", lines=2, placeholder="Enter your question and press \"shift+enter\" ")
+
+#             with gr.Row():
+#                 with gr.Column(scale=0.5):
+#                     submit_btn = gr.Button('Submit', variant='primary', size='sm')
+#                 with gr.Column(scale=0.5):
+#                     clear_btn = gr.Button('Clear', variant='stop', size='sm')
+
+#            model_load_btn.click(load_models, [hf_token, embedding_model], load_success_msg, api_name="load_models")
+
+    augmented_mode.change(mode_change, augmented_mode,[cag_chatbot, cag_hl_chatbot, cag_tl_chatbot])
+
+    txt.submit(
+        add_text, [cag_chatbot, txt], [cag_chatbot, txt]
+    ).then(
+        bot_answer,
+        [augmented_mode, cag_chatbot, cag_hl_chatbot, cag_tl_chatbot],
+        [cag_chatbot, cag_hl_chatbot, cag_tl_chatbot],queue=True
+    ).then(
+        clear_cuda_cache, None, None
+    )
+        # .then(bot, [chatbot], [chatbot, translated_chatbot])
+    # ,translated_chatbot_tl
+
+    submit_btn.click(
+        add_text, [ cag_chatbot, txt], [cag_chatbot, txt]
+    ).then(
+        bot_answer,
+        [augmented_mode, cag_chatbot, cag_hl_chatbot, cag_tl_chatbot], 
+        [cag_chatbot, cag_hl_chatbot, cag_tl_chatbot],queue=True
+    ).then(
+        clear_cuda_cache, None, None
+    )# ,translated_chatbot_tl
+    #.then(bot, [chatbot], [chatbot, translated_chatbot])
+    # clear_btn.click(lambda: None, None, chatbot, queue=False)
+    # clear_btn.click(lambda: None, None, translated_chatbot, queue=False)
+    # clear_btn.click(lambda: None, None, translated_chatbot_tl, queue=False)
+    clear_btn.click(lambda: None, None, cag_chatbot, queue=False)
+    clear_btn.click(lambda: None, None, cag_hl_chatbot, queue=False)
+    clear_btn.click(lambda: None, None, cag_tl_chatbot, queue=False)
+    clear_btn.click(lambda: None, None, tts_audio, queue=False)
+
+    # TTS 播放按鈕事件
+    tts_btn.click(
+        synthesize_tl_speech,
+        [cag_tl_chatbot],
+        [tts_audio]
+    )
+
+
+if __name__ == '__main__':
+    # demo.queue(concurrency_count=3)
+    
+    # 掛gradio伺服器
+    #demo.launch(debug=True, share=True)
+    
+    # 掛伺服器 https://140.125.45.132:1235/
+    demo.queue().launch(debug=False, server_name='0.0.0.0', server_port=6006, share=True)
