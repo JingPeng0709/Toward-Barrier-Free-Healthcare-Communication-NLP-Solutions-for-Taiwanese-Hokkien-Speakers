@@ -1,6 +1,6 @@
 # Hokkien Translation Module
 ## Task Definition
-This module focuses on translating Mandarin Chinese into Hokkien Southern Min (Pe̍h-ōe-jī).
+This module focuses on translating Mandarin Chinese into Hokkien.
 ## Motivation
 Hokkien is widely used in daily communication, especially among elderly populations. However, most medical information is provided in Mandarin, creating a communication gap.
 This module aims to improve accessibility by enabling accurate translation into Hokkien.
