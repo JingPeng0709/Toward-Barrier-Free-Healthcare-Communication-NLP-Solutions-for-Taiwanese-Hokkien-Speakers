@@ -1,4 +1,4 @@
-# Hokkien Translation Module
+<img width="144" height="81" alt="image" src="https://github.com/user-attachments/assets/794cd789-b10e-4317-9419-c37346f61972" /># Hokkien Translation Module
 
 ## Task Definition
 This module focuses on translating Mandarin Chinese into Hokkien(Tailo).
@@ -29,7 +29,15 @@ model link : https://drive.google.com/drive/folders/1r-q6QMNPOk7lHJQoRQ98ZBTtVhC
 ## Evaluation
 - BLEU score (for n-gram based lexical similarity)
 - Chrf score (character n-gram F-score, suitable for Hokkien romanization)
-  
+
+## score
+| Model | BLEU | Chrf |
+|---------|------|------|
+| tl2hl | 90.19 | 94.54 |
+| hl2zh | 94.29 | 98.22 |
+| zh2hl | 90.25 | 94.44 |
+| tl2hl | 93.00 | 93.79 |
+
 ## Example
 | Mandarin | Hokkien |
 |----------|----------------|
