@@ -18,6 +18,13 @@ This project adopts Tailo for standardized Hokkien representation.
 ## Translation model dataset
 - Small-scale curated dataset
 - Manually aligned Mandarin–Hokkien pairs
+
+## Models
+1. Tailo to Hanzi (tl2hl)
+2. Hanzi to Mandarin (hl2zh)
+3. Mandarin to Hanzi (zh2hl)
+4. Hanzi to Tailo (tl2hl)
+model link : https://drive.google.com/drive/folders/1r-q6QMNPOk7lHJQoRQ98ZBTtVhCil23v?usp=drive_link
   
 ## Evaluation
 - BLEU score (for n-gram based lexical similarity)
