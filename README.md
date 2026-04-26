@@ -55,7 +55,7 @@ Hokkien Query
 - Expand dataset size
 - Improve domain-specific translation (medical terminology)
 
-<!--# RAG vs CAG Fidelity Evaluation in Healthcare QA
+# RAG vs CAG Fidelity Evaluation in Healthcare QA
 
 ## Overview
 This project evaluates the fidelity performance of Retrieval-Augmented Generation (RAG) and Cache-Augmented Generation (CAG) in a static question-answering scenario.
@@ -86,4 +86,4 @@ This project explores whether integrating retrieval (RAG) or caching (CAG) mecha
 | RAG    | 0.8         |
 | CAG    | 0.903       |
 
-> CAG shows better performance in static QA scenarios due to reduced retrieval noise.-->
+> CAG shows better performance in static QA scenarios due to reduced retrieval noise.
