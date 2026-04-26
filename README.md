@@ -1,4 +1,4 @@
-<img width="144" height="81" alt="image" src="https://github.com/user-attachments/assets/794cd789-b10e-4317-9419-c37346f61972" /># Hokkien Translation Module
+# Hokkien Translation Module
 
 ## Task Definition
 This module focuses on translating Mandarin Chinese into Hokkien(Tailo).
