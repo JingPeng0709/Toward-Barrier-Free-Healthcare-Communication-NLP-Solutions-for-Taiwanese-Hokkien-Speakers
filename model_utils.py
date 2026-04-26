@@ -23,14 +23,12 @@ from dotenv import load_dotenv
 load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 if not HF_TOKEN:
-    HF_TOKEN = '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'
-    # hf_token = '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'
+    HF_TOKEN = 'INSERT_HF_TOKEN'
     # raise ValueError("HF_TOKEN not found")
     
 #--------------
 model_path = '../model/llama-3-chinese-8b-instruct-v3'
 
-# device = f'cuda:{cuda.current_device()}' if cuda.is_available() else 'cpu'
 device = f'cuda:0' if cuda.is_available() else 'cpu'
 
 bnb_config = transformers.BitsAndBytesConfig(
@@ -83,18 +81,18 @@ converter = opencc.OpenCC('s2twp')
 #------------------翻譯模型 start------------------
 
 #中文斷詞詞表 路徑待修改
-jieba.load_userdict('../../fairseq_tl&hl/datasets_preprocess/詞表區/jieba_特定領域詞表.txt') 
-jieba.load_userdict('../../fairseq_tl&hl/datasets_preprocess/詞表區/icorpus&translation2019zh_chunk0-1&huggingface_詞表.txt')
-jieba.load_userdict('../../fairseq_tl&hl/datasets_preprocess/詞表區/台語詞表.txt')
+jieba.load_userdict('詞表區/jieba_特定領域詞表.txt') 
+jieba.load_userdict('詞表區/icorpus&translation2019zh_chunk0-1&huggingface_詞表.txt')
+jieba.load_userdict('詞表區/台語詞表.txt')
 
 #翻譯模型路徑    
-model_path = '../../fairseq_tl&hl/model/教育部_教會公報_語料集_punc_zh2hl/'
+model_path = 'model/教育部_教會公報_語料集_punc_zh2hl/'
 
 model_paths = {
-    'zh2hl' : '../../fairseq_tl&hl/model/教育部_教會公報_語料集_zh2hl',
-    'hl2zh' : '../../fairseq_tl&hl/model/教育部_教會公報_語料集_hl2zh',
-    'tl2hl' : '../../fairseq_tl&hl/model/教育部_教會公報_語料集_tl2hl',
-    'hl2tl' : '../../fairseq_tl&hl/model/教育部_教會公報_語料集_hl2tl',
+    'zh2hl' : 'model/教育部_教會公報_語料集_zh2hl',
+    'hl2zh' : 'model/教育部_教會公報_語料集_hl2zh',
+    'tl2hl' : 'model/教育部_教會公報_語料集_tl2hl',
+    'hl2tl' : 'model/教育部_教會公報_語料集_hl2tl',
 }
 
 #check point
@@ -104,82 +102,46 @@ ckpt = 'checkpoint_last.pt'
 zh2hl = TransformerModel.from_pretrained(
   model_path,
   checkpoint_file=ckpt,
-  data_name_or_path='../../../fairseq_tl&hl/training_data/教育部_教會公報_語料集_punc_zh2hl/bin',
+  data_name_or_path='training_data/教育部_教會公報_語料集_punc_zh2hl/bin',
   bpe='subword_nmt',
-  bpe_codes='../../fairseq_tl&hl/datasets_preprocess/datasets/教育部_教會公報_語料集/BPE/教育部_教會公報_語料集_bpecode.zh',
+  bpe_codes='BPE/教育部_教會公報_語料集_bpecode.zh',
   device_map="auto"
 )
 
 tl2hl = TransformerModel.from_pretrained(
   model_paths['tl2hl'],
   checkpoint_file=ckpt,
-  data_name_or_path='../../../fairseq_tl&hl/training_data/教育部_教會公報_語料集_tl2hl/bin',
+  data_name_or_path='教育部_教會公報_語料集_tl2hl/bin',
   bpe='subword_nmt',
-  bpe_codes='../../fairseq_tl&hl/datasets_preprocess/datasets/教育部_教會公報_語料集/BPE/教育部_教會公報_語料集_bpecode.tl',
+  bpe_codes='BPE/教育部_教會公報_語料集_bpecode.tl',
   device_map="auto"
 )
 
 hl2zh = TransformerModel.from_pretrained(
   model_paths['hl2zh'],
   checkpoint_file=ckpt,
-  data_name_or_path='../../../fairseq_tl&hl/training_data/教育部_教會公報_語料集_hl2zh/bin',
+  data_name_or_path='教育部_教會公報_語料集_hl2zh/bin',
   bpe='subword_nmt',
-  bpe_codes='../../fairseq_tl&hl/datasets_preprocess/datasets/教育部_教會公報_語料集/BPE/教育部_教會公報_語料集_2_bpecode.hl',
+  bpe_codes='BPE/教育部_教會公報_語料集_2_bpecode.hl',
   device_map="auto"
 )
 
 #---------hl2tl模型-------------
-# model_path_hl2tl = '../../fairseq_tl&hl/model/6_教育部例句_hl2tl_v2_1/'
-model_path_hl2tl = '../../fairseq_tl&hl/model/教育部_教會公報_語料集_hl2tl/'
+model_path_hl2tl = 'model/教育部_教會公報_語料集_hl2tl/'
 ckpt_hl2tl = 'checkpoint_last.pt'
 
 hl2tl = TransformerModel.from_pretrained(
     model_path_hl2tl,
     checkpoint_file=ckpt_hl2tl,
-    data_name_or_path='../../../fairseq_tl&hl/training_data/教育部_教會公報_語料集_hl2tl/bin',
+    data_name_or_path='training_data/教育部_教會公報_語料集_hl2tl/bin',
     bpe='subword_nmt',
-    bpe_codes='../../fairseq_tl&hl/datasets_preprocess/datasets/教育部_教會公報_語料集/BPE/教育部_教會公報_語料集_bpecode.hl',
+    bpe_codes='BPE/教育部_教會公報_語料集_bpecode.hl',
     device_map=1  # "auto"
 )
 #------------------------------
 
 model_setup = ModelSetup(HF_TOKEN, "bge-large-zh-v1.5")
 success_prompt = model_setup.setup()
-
-#------------------TTS模型 start------------------
-print("Loading TTS model...")
-device = "cuda" if torch.cuda.is_available() else "cpu"
-synthesizer = Synthesizer(
-    tts_checkpoint="./TTS_demo/C_model/mixed_data-June-24-2025_07+59AM-0000000/checkpoint_1635000.pth",
-    tts_config_path="./TTS_demo/C_model/mixed_data-June-24-2025_07+59AM-0000000/config.json",
-    use_cuda=(device == "cuda")
-)
-print("TTS model loaded successfully!")
-
-def text_TTS(text, output="./TTS_demo/tts_output.wav"):
-    wav = synthesizer.tts(
-        text=text,
-        speaker_name="F1"
-    )
-    sf.write(output, wav, synthesizer.tts_config.audio.sample_rate)
-    print(f"Audio saved to {output}")
-    return output
-
-def get_latest_tl_response(history_3):
-    """從台羅 chatbot 歷史中取得最新的回應"""
-    if history_3 and len(history_3) > 0:
-        last_entry = history_3[-1]
-        if last_entry and len(last_entry) > 1 and last_entry[1]:
-            return last_entry[1]
-    return None
-
-def synthesize_tl_speech(history_3):
-    """合成台羅語音並回傳音檔路徑"""
-    tl_text = get_latest_tl_response(history_3)
-    if tl_text:
-        return text_TTS(tl_text)
-    return None
-#------------------TTS模型 end------------------
 
 #---------zh2hl----------
 def translate_and_append(text, model):
