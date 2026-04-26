@@ -9,13 +9,13 @@ The study focuses on healthcare-related queries and compares how different archi
 Large Language Models (LLMs) often suffer from hallucination issues.  
 This project explores whether integrating retrieval (RAG) or caching (CAG) mechanisms can improve answer reliability.
 
-## 🛠 Tech Stack
+## Tech Stack
 - LLM: Llama-3-Chinese-8B-Instruct
 - Framework: LangChain
 - Evaluation: RAGAS
 - Language: Python
 
-## 🧪 Methodology
+## Methodology
 - Designed 10 healthcare-related queries
 - Built two pipelines:
   - RAG (retrieval-based)
@@ -23,7 +23,7 @@ This project explores whether integrating retrieval (RAG) or caching (CAG) mecha
 - Evaluated responses using RAGAS metrics:
   - Faithfulness
 
-## 📊 Results
+## Results
 | Method | Faithfulness |
 |--------|------------|
 | RAG    | 0.8         |
