@@ -1,3 +1,24 @@
+# Hokkien Translation Module
+## Task Definition
+This module focuses on translating Mandarin Chinese into Hokkien Southern Min (Pe̍h-ōe-jī).
+## Motivation
+Hokkien is widely used in daily communication, especially among elderly populations. However, most medical information is provided in Mandarin, creating a communication gap.
+This module aims to improve accessibility by enabling accurate translation into Hokkien.
+## Dataset
+- Small-scale curated dataset
+- Manually aligned Mandarin–Hokkien pairs
+## Evaluation
+- BLEU score (for n-gram based lexical similarity)
+- Chrf score (character n-gram F-score, suitable for Hokkien romanization)
+## Example
+| Mandarin | Hokkien |
+|----------|----------------|
+| 我每天騎腳踏車運動 | guá ta̍ k-kang khiâ kha-ta̍ h-tshia ūn-tōng |
+| 可以吃止痛藥嗎 | É-sái chia tsí-thiàng-ioh--bô |
+## Future Work
+- Expand dataset size
+- Improve domain-specific translation (medical terminology)
+
 # RAG vs CAG Fidelity Evaluation in Healthcare QA
 
 ## Overview
