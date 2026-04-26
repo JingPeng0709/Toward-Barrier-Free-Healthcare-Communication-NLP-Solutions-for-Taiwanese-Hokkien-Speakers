@@ -18,7 +18,7 @@ torch.serialization.add_safe_globals([set])
 os.environ["CUDA_VISIBLE_DEVICES"]='0,1'
 HF_TOKEN = os.getenv("HF_TOKEN")
 if not HF_TOKEN:
-    HF_TOKEN = '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'
+    HF_TOKEN = 'INSERT_HF_TOKEN'
     # raise ValueError("HF_TOKEN not found")
     
 # callbacks = [StreamingStdOutCallbackHandler()]
