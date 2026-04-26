@@ -24,6 +24,7 @@ This project adopts Tailo for standardized Hokkien representation.
 2. Hanzi to Mandarin (hl2zh)
 3. Mandarin to Hanzi (zh2hl)
 4. Hanzi to Tailo (tl2hl)
+   
 model link : https://drive.google.com/drive/folders/1r-q6QMNPOk7lHJQoRQ98ZBTtVhCil23v?usp=drive_link
   
 ## Evaluation
